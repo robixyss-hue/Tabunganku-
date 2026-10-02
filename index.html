@@ -1,0 +1,1283 @@
+<!DOCTYPE html>
+<html lang="id">
+<!-- 
+    ==================================================================================
+    PROYEK: TABUNGANKU - STANDALONE VERSION (v10.21)
+    ==================================================================================
+-->
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Tabunganku - v10.21 Edition</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --bg-gradient: radial-gradient(circle at 50% -20%, #1c1c1e, #000000 85%);
+      --glass-bg: rgba(255, 255, 255, 0.05);
+      --glass-border-subtle: rgba(255, 255, 255, 0.12);
+      --accent-primary: #30d158;
+      --accent-blue: #0a84ff;
+      --accent-yellow: #ffd60a;
+      --accent-red: #ff453a;
+      --text-main: #f2f2f7;
+      --text-sub: #8e8e93;
+      --modal-bg: rgba(28, 28, 30, 0.95);
+      --input-bg: rgba(255, 255, 255, 0.06);
+      --toggle-btn-bg: rgba(255, 255, 255, 0.08);
+      --border-gradient-1: rgba(255, 255, 255, 0.65);
+      --border-gradient-2: rgba(255, 255, 255, 0.04);
+    }
+
+    [data-bg="obsidian"] {
+      --bg-gradient: radial-gradient(circle at 50% -20%, #1c1c1e, #000000 85%);
+      --glass-bg: rgba(255, 255, 255, 0.05);
+      --text-main: #f2f2f7;
+      --text-sub: #8e8e93;
+      --modal-bg: rgba(28, 28, 30, 0.95);
+      --input-bg: rgba(255, 255, 255, 0.06);
+      --toggle-btn-bg: rgba(255, 255, 255, 0.08);
+      --glass-border-subtle: rgba(255, 255, 255, 0.12);
+      --border-gradient-1: rgba(255, 255, 255, 0.65);
+      --border-gradient-2: rgba(255, 255, 255, 0.04);
+    }
+
+    [data-bg="navy"] {
+      --bg-gradient: radial-gradient(circle at 50% -20%, #1e293b, #0f172a 85%);
+      --glass-bg: rgba(30, 41, 59, 0.45);
+      --text-main: #f8fafc;
+      --text-sub: #94a3b8;
+      --modal-bg: rgba(15, 23, 42, 0.95);
+      --input-bg: rgba(255, 255, 255, 0.06);
+      --toggle-btn-bg: rgba(255, 255, 255, 0.08);
+      --glass-border-subtle: rgba(255, 255, 255, 0.12);
+      --border-gradient-1: rgba(56, 189, 248, 0.6);
+      --border-gradient-2: rgba(255, 255, 255, 0.03);
+    }
+
+    [data-bg="purple"] {
+      --bg-gradient: radial-gradient(circle at 50% -20%, #2e1065, #09090b 85%);
+      --glass-bg: rgba(46, 16, 101, 0.35);
+      --text-main: #faf5ff;
+      --text-sub: #d8b4fe;
+      --modal-bg: rgba(24, 10, 50, 0.95);
+      --input-bg: rgba(255, 255, 255, 0.06);
+      --toggle-btn-bg: rgba(255, 255, 255, 0.08);
+      --glass-border-subtle: rgba(216, 180, 254, 0.2);
+      --border-gradient-1: rgba(216, 180, 254, 0.6);
+      --border-gradient-2: rgba(255, 255, 255, 0.03);
+    }
+
+    [data-bg="light"] {
+      --bg-gradient: radial-gradient(circle at 50% -20%, #f2f2f7, #e5e5ea 85%);
+      --glass-bg: rgba(255, 255, 255, 0.75);
+      --text-main: #000000;
+      --text-sub: #6c6c70;
+      --modal-bg: rgba(255, 255, 255, 0.95);
+      --input-bg: rgba(0, 0, 0, 0.04);
+      --toggle-btn-bg: rgba(0, 0, 0, 0.06);
+      --glass-border-subtle: rgba(0, 0, 0, 0.12);
+      --border-gradient-1: rgba(0, 0, 0, 0.35);
+      --border-gradient-2: rgba(0, 0, 0, 0.03);
+    }
+
+    [data-accent="green"] { --accent-primary: #30d158; }
+    [data-accent="blue"] { --accent-primary: #0a84ff; }
+    [data-accent="orange"] { --accent-primary: #ff9f0a; }
+    [data-accent="purple"] { --accent-primary: #bf5af2; }
+    [data-accent="pink"] { --accent-primary: #ff375f; }
+
+    html, body {
+      max-width: 100%;
+      overflow-x: hidden !important;
+    }
+
+    body {
+      background: var(--bg-gradient);
+      color: var(--text-main);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", sans-serif;
+      min-height: 100vh;
+      padding-bottom: 60px;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    ::-webkit-scrollbar { width: 6px; height: 0px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.2); border-radius: 10px; }
+
+    #welcomeOverlay {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at center, #1c1c1e 0%, #000000 100%);
+      backdrop-filter: blur(40px);
+      -webkit-backdrop-filter: blur(40px);
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.8s ease, visibility 0.8s ease;
+      overflow: hidden;
+    }
+
+    .splash-glow-circle {
+      position: absolute;
+      width: 280px;
+      height: 280px;
+      background: linear-gradient(135deg, rgba(10, 132, 255, 0.4), rgba(48, 209, 88, 0.3));
+      filter: blur(60px);
+      border-radius: 50%;
+      animation: pulseGlow 3s infinite alternate ease-in-out;
+      z-index: 1;
+    }
+    @keyframes pulseGlow {
+      0% { transform: scale(0.8); opacity: 0.5; }
+      100% { transform: scale(1.3); opacity: 0.9; }
+    }
+
+    .welcome-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      animation: fadeInUpSplash 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    @keyframes fadeInUpSplash {
+      0% { transform: translateY(30px) scale(0.9); opacity: 0; }
+      100% { transform: translateY(0) scale(1); opacity: 1; }
+    }
+
+    .splash-money-bag {
+      font-size: 4.5rem;
+      margin-bottom: 12px;
+      display: inline-block;
+      animation: bounceIcon 2s infinite ease-in-out;
+      filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.3));
+    }
+    @keyframes bounceIcon {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-10px) rotate(4deg); }
+    }
+
+    .splash-subtitle {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      color: var(--text-sub);
+      font-weight: 700;
+    }
+
+    .splash-title {
+      font-size: 2.5rem;
+      font-weight: 800;
+      letter-spacing: -1px;
+      background: linear-gradient(135deg, var(--accent-blue), var(--accent-primary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-top: 4px;
+    }
+
+    .splash-loader {
+      width: 140px;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 4px;
+      margin: 28px auto 0 auto;
+      overflow: hidden;
+      position: relative;
+      z-index: 2;
+    }
+    .splash-loader-bar {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent-blue), var(--accent-primary));
+      border-radius: 4px;
+      animation: loadProgress 3.5s ease-in-out forwards;
+    }
+    @keyframes loadProgress {
+      0% { width: 0%; }
+      100% { width: 100%; }
+    }
+
+    .glass-card {
+      position: relative;
+      background: var(--glass-bg);
+      backdrop-filter: blur(25px) saturate(180%);
+      -webkit-backdrop-filter: blur(25px) saturate(180%);
+      border-radius: 24px;
+      padding: 22px;
+      margin-bottom: 20px;
+      box-shadow: 0 10px 40px 0 rgba(0, 0, 0, 0.15);
+      overflow: hidden;
+      box-sizing: border-box;
+      transition: background 0.3s ease;
+    }
+    .glass-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 24px;
+      padding: 1px;
+      background: linear-gradient(
+        45deg,
+        var(--border-gradient-1) 0%,
+        var(--border-gradient-2) 40%,
+        var(--border-gradient-2) 60%,
+        var(--border-gradient-1) 100%
+      );
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+    }
+
+    .glass-topbar { padding: 16px 20px !important; border-radius: 20px; }
+
+    .glass-input {
+      background: var(--input-bg) !important;
+      border: 1px solid var(--glass-border-subtle) !important;
+      color: var(--text-main) !important;
+      border-radius: 14px !important;
+      padding: 10px 14px !important;
+      font-size: 0.85rem;
+      box-sizing: border-box;
+    }
+    .glass-input::placeholder { color: var(--text-sub); }
+
+    .glass-input-shiny {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.04)) !important;
+      border: 1px solid var(--border-gradient-1) !important;
+      color: var(--text-main) !important;
+      border-radius: 12px !important;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+    .glass-input-shiny::placeholder { color: var(--text-sub); }
+
+    .btn-glass-primary {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.05));
+      color: var(--text-main);
+      border: 1px solid var(--border-gradient-1);
+      border-radius: 14px;
+      padding: 12px;
+      font-weight: 600;
+      width: 100%;
+      backdrop-filter: blur(10px);
+    }
+    .btn-glass-primary:hover { color: var(--text-main); background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1)); }
+
+    .btn-glass-google {
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--text-main);
+      border: 1px solid var(--glass-border-subtle);
+      border-radius: 14px;
+      padding: 11px;
+      font-weight: 600;
+      width: 100%;
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      font-size: 0.85rem;
+      transition: all 0.2s ease;
+    }
+    .btn-glass-google:hover { background: rgba(255, 255, 255, 0.2); color: var(--text-main); }
+
+    .btn-glass-secondary {
+      background: var(--toggle-btn-bg);
+      color: var(--text-main);
+      border: 1px solid var(--glass-border-subtle);
+      border-radius: 12px;
+      padding: 6px 14px;
+      font-size: 0.8rem;
+    }
+
+    .btn-glass-target {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.05));
+      color: var(--text-main);
+      border: 1px solid var(--border-gradient-1);
+      border-radius: 12px;
+      padding: 8px 14px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+    }
+    .btn-glass-target:hover { color: var(--text-main); background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1)); }
+
+    .btn-glass-setor {
+      background: linear-gradient(135deg, rgba(48, 209, 88, 0.25), rgba(48, 209, 88, 0.05));
+      color: var(--accent-primary);
+      border: 1px solid var(--accent-primary);
+      border-radius: 12px;
+      backdrop-filter: blur(10px);
+    }
+    .btn-glass-setor:hover { color: var(--accent-primary); background: linear-gradient(135deg, rgba(48, 209, 88, 0.4), rgba(48, 209, 88, 0.15)); }
+
+    .btn-glass-tarik {
+      background: linear-gradient(135deg, rgba(255, 69, 58, 0.25), rgba(255, 69, 58, 0.05));
+      color: var(--accent-red);
+      border: 1px solid rgba(255, 69, 58, 0.4);
+      border-radius: 12px;
+      backdrop-filter: blur(10px);
+    }
+    .btn-glass-tarik:hover { color: var(--accent-red); background: linear-gradient(135deg, rgba(255, 69, 58, 0.4), rgba(255, 69, 58, 0.15)); }
+
+    .btn-icon-glass {
+      background: var(--toggle-btn-bg);
+      color: var(--text-main);
+      border: 1px solid var(--glass-border-subtle);
+      border-radius: 10px;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .btn-icon-glass:active { transform: scale(0.95); }
+
+    .progress-glass { height: 9px; background: var(--toggle-btn-bg); border-radius: 20px; overflow: hidden; }
+    .progress-bar-glass { background: linear-gradient(90deg, var(--accent-primary), var(--accent-blue)); height: 100%; border-radius: 20px; box-shadow: 0 0 12px rgba(48, 209, 88, 0.4); transition: width 0.5s ease; }
+
+    .badge-ios { background: var(--toggle-btn-bg); border: 1px solid var(--glass-border-subtle); border-radius: 20px; padding: 4px 10px; font-size: 0.75rem; color: var(--text-sub); }
+
+    .badge-box { background: var(--toggle-btn-bg); border: 1px solid var(--glass-border-subtle); border-radius: 16px; padding: 10px; text-align: center; transition: all 0.3s ease; box-sizing: border-box; }
+    .badge-box.unlocked { border-color: var(--accent-primary); background: linear-gradient(135deg, rgba(48, 209, 88, 0.15), rgba(48, 209, 88, 0.02)); }
+    .badge-box.locked { opacity: 0.4; filter: grayscale(1); }
+
+    .target-icon-badge {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      background: var(--toggle-btn-bg);
+      border: 1px solid var(--glass-border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      flex-shrink: 0;
+    }
+
+    .theme-buttons-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .theme-preset-btn {
+      flex: 1 1 42%;
+      min-width: 100px;
+      border: 2px solid var(--glass-border-subtle);
+      border-radius: 12px;
+      padding: 8px 12px;
+      background: var(--toggle-btn-bg);
+      color: var(--text-main);
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: center;
+      box-sizing: border-box;
+    }
+    .theme-preset-btn.active {
+      border-color: var(--accent-primary);
+      background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.02));
+    }
+
+    .color-dot {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: inline-block;
+      border: 2px solid rgba(255,255,255,0.3);
+      transition: transform 0.2s ease;
+    }
+    .color-dot:hover { transform: scale(1.15); }
+    .color-dot.active { border-color: #ffffff; transform: scale(1.2); box-shadow: 0 0 10px rgba(255,255,255,0.6); }
+
+    #savingsList { max-height: 65vh; overflow-y: auto; overflow-x: hidden; padding-right: 4px; padding-bottom: 20px; box-sizing: border-box; }
+    
+    .modal-body {
+      overflow-x: hidden !important;
+      overflow-y: auto !important;
+      max-width: 100%;
+      box-sizing: border-box;
+    }
+  </style>
+</head>
+<body data-bg="obsidian" data-accent="green">
+
+  <div id="welcomeOverlay">
+    <div class="splash-glow-circle"></div>
+    <div class="welcome-content px-3">
+      <div class="splash-money-bag">💰</div>
+      <div class="splash-subtitle">Welcome to</div>
+      <div class="splash-title">Tabunganku</div>
+      <div class="splash-loader">
+        <div class="splash-loader-bar"></div>
+      </div>
+    </div>
+  </div>
+
+<div class="container" style="max-width: 520px; padding-top: 24px; overflow-x: hidden; box-sizing: border-box;">
+
+  <div class="d-flex justify-content-between align-items-center mb-4 px-2">
+    <div class="d-flex align-items-center gap-2">
+      <button type="button" class="btn-glass-target p-0 d-flex align-items-center justify-content-center" style="width: 32px; height: 32px; font-size: 0.9rem; border-radius: 10px;" onclick="openMenuModal()" title="Menu & Tema">
+        ☰
+      </button>
+      <h1 class="fw-bold m-0" style="font-size: 1.3rem; letter-spacing: -0.3px;">Tabunganku</h1>
+    </div>
+    <div class="d-flex align-items-center" style="gap: 5px;">
+      <button type="button" class="btn-icon-glass" onclick="toggleBlurPrivacy()" title="Sembunyikan/Tampilkan Saldo">👁️</button>
+      <button type="button" class="btn-icon-glass" onclick="triggerMotivation()" title="Butuh Dorongan Semangat?">🎯</button>
+      <button type="button" class="btn-icon-glass" onclick="requestNotificationPermission()" title="Aktifkan Izin Notifikasi">🔔</button>
+      <button type="button" class="btn-icon-glass" onclick="openMenuModal()" title="Studio Kustomisasi Tema">🎨</button>
+    </div>
+  </div>
+
+  <div id="authSection" class="glass-card">
+    <div class="d-flex justify-content-between mb-3 border-bottom border-secondary border-opacity-25 pb-2">
+      <button type="button" class="btn p-0 fw-bold fs-6" style="color: var(--text-main);" id="tabLoginBtn">Masuk</button>
+      <button type="button" class="btn p-0 fw-bold fs-6" style="color: var(--text-sub);" id="tabRegisterBtn">Daftar Akun</button>
+    </div>
+
+    <!-- Form Login -->
+    <div id="formLogin">
+      <div class="mb-2"><input type="email" id="loginEmail" class="form-control glass-input" placeholder="Alamat Email (Gmail)" autocomplete="email"></div>
+      <div class="mb-3"><input type="password" id="loginPassword" class="form-control glass-input" placeholder="Kata Sandi" autocomplete="current-password"></div>
+      
+      <button type="button" id="btnDoLogin" class="btn btn-glass-primary mb-3">Masuk ke Tabungan</button>
+      
+      <!-- Tombol Lupa Password -->
+      <div class="text-center my-2">
+        <button type="button" class="btn p-0 text-decoration-none" style="font-size: 0.8rem; color: var(--accent-blue);" onclick="openForgotPasswordModal()">Lupa Kata Sandi?</button>
+      </div>
+
+      <div class="d-flex align-items-center my-3">
+        <div class="flex-grow-1 border-top border-secondary border-opacity-25"></div>
+        <span class="px-2 text-muted" style="font-size: 0.75rem;">Atau</span>
+        <div class="flex-grow-1 border-top border-secondary border-opacity-25"></div>
+      </div>
+
+      <button type="button" id="btnGoogleLogin" class="btn btn-glass-google" onclick="loginWithGoogle()">
+        <svg width="16" height="16" viewBox="0 0 24 24"><path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.6l3.1-3.1C17.3 1.8 14.8 1 12 1 7.5 1 3.7 3.6 1.8 7.3l3.7 2.9C6.4 7.2 9 5 12 5z"/><path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.5h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5 3.7-8.8z"/><path fill="#FBBC05" d="M5.5 10.2c-.2.7-.4 1.5-.4 2.3s.2 1.6.4 2.3L1.8 17.7C1 16 0.5 14.1 0.5 12s.5-4 1.3-5.7l3.7 2.9z"/><path fill="#34A853" d="M12 23c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3 0-5.6-2.2-6.5-5.2L1.8 16c1.9 3.7 5.7 7 10.2 7z"/></svg>
+        Masuk dengan Google
+      </button>
+    </div>
+
+    <!-- Form Register -->
+    <div id="formRegister" style="display: none;">
+      <div class="mb-2"><input type="email" id="regEmail" class="form-control glass-input" placeholder="Alamat Email Baru (Gmail)" autocomplete="email"></div>
+      <div class="mb-3"><input type="password" id="regPassword" class="form-control glass-input" placeholder="Kata Sandi (min. 6 karakter)" autocomplete="new-password"></div>
+      <button type="button" id="btnDoRegister" class="btn btn-glass-primary mb-3">Daftar Akun Baru</button>
+
+      <div class="d-flex align-items-center my-3">
+        <div class="flex-grow-1 border-top border-secondary border-opacity-25"></div>
+        <span class="px-2 text-muted" style="font-size: 0.75rem;">Atau</span>
+        <div class="flex-grow-1 border-top border-secondary border-opacity-25"></div>
+      </div>
+
+      <button type="button" id="btnGoogleRegister" class="btn btn-glass-google" onclick="loginWithGoogle()">
+        <svg width="16" height="16" viewBox="0 0 24 24"><path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.6l3.1-3.1C17.3 1.8 14.8 1 12 1 7.5 1 3.7 3.6 1.8 7.3l3.7 2.9C6.4 7.2 9 5 12 5z"/><path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.5h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5 3.7-8.8z"/><path fill="#FBBC05" d="M5.5 10.2c-.2.7-.4 1.5-.4 2.3s.2 1.6.4 2.3L1.8 17.7C1 16 0.5 14.1 0.5 12s.5-4 1.3-5.7l3.7 2.9z"/><path fill="#34A853" d="M12 23c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3 0-5.6-2.2-6.5-5.2L1.8 16c1.9 3.7 5.7 7 10.2 7z"/></svg>
+        Daftar dengan Google
+      </button>
+    </div>
+
+    <div id="authStatus" class="text-center mt-3 p-2 rounded" style="display: none; font-size: 0.85rem;"></div>
+  </div>
+
+  <div id="appSection" style="display: none;">
+    <div class="glass-card glass-topbar mb-3 d-flex justify-content-between align-items-center">
+      <div class="d-flex align-items-center gap-2" style="max-width: 60%;">
+        <span style="font-size: 1.1rem;">👤</span>
+        <div class="overflow-hidden"><span id="userEmailDisplay" class="text-truncate d-block fw-bold" style="font-size: 0.8rem; color: var(--accent-primary);">user@email.com</span></div>
+      </div>
+      <div class="d-flex align-items-center gap-2">
+        <button type="button" class="btn btn-glass-secondary text-danger border-danger border-opacity-25 py-1 px-2" style="font-size: 0.75rem;" id="btnLogout">Keluar</button>
+        <button type="button" class="btn btn-glass-target py-1 px-3" id="btnToggleAddTarget">+ Target</button>
+      </div>
+    </div>
+
+    <div id="addTargetCard" class="glass-card mb-3" style="display: none;">
+      <h6 class="fw-bold mb-3" style="color: var(--accent-primary);">🎯 Tambah Target Tabungan Baru</h6>
+      <div class="row g-2 mb-2">
+        <div class="col-3">
+          <label class="small mb-1" style="color: var(--text-sub); font-size: 0.75rem;">Ikon Emoji</label>
+          <select id="targetEmoji" class="form-select glass-input py-2">
+            <option value="💰">💰</option>
+            <option value="✈️">✈️</option>
+            <option value="💻">💻</option>
+            <option value="🚗">🚗</option>
+            <option value="🏠">🏠</option>
+            <option value="🛡️">🛡️</option>
+            <option value="📱">📱</option>
+            <option value="🎁">🎁</option>
+            <option value="💍">💍</option>
+          </select>
+        </div>
+        <div class="col-9">
+          <label class="small mb-1" style="color: var(--text-sub); font-size: 0.75rem;">Nama Target</label>
+          <input type="text" id="targetName" class="form-control glass-input" placeholder="Contoh: Liburan ke Bali">
+        </div>
+      </div>
+      <div class="mb-3">
+        <label class="small mb-1" style="color: var(--text-sub); font-size: 0.75rem;">Nominal Target (Rp)</label>
+        <input type="text" id="targetAmount" class="form-control glass-input glass-input-shiny" placeholder="Nominal Target (Rp)" oninput="formatInputRibuan(this)">
+      </div>
+      <div class="d-flex gap-2">
+        <button type="button" class="btn btn-glass-secondary w-50" id="btnCancelAddTarget">Batal</button>
+        <button type="button" class="btn btn-glass-primary w-50" id="btnSaveTarget">Simpan Target</button>
+      </div>
+    </div>
+
+    <div id="savingsList"></div>
+  </div>
+
+</div>
+
+<!-- Modal Pemulihan Kata Sandi -->
+<div class="modal fade" id="forgotModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content glass-card border-0 m-3" style="background: var(--modal-bg); overflow: hidden;">
+      <h6 class="fw-bold mb-2" style="color: var(--accent-primary);">🔑 Pemulihan Kata Sandi</h6>
+      <p class="small mb-3" style="color: var(--text-sub); font-size: 0.8rem;">Masukkan email terdaftar dan kata sandi baru Anda untuk memperbarui akses.</p>
+      
+      <div class="mb-2">
+        <input type="email" id="forgotEmail" class="form-control glass-input" placeholder="Alamat Email (Gmail)">
+      </div>
+      <div class="mb-3">
+        <input type="password" id="newResetPassword" class="form-control glass-input" placeholder="Kata Sandi Baru (min. 6 karakter)">
+      </div>
+
+      <div class="d-flex gap-2">
+        <button type="button" class="btn btn-glass-secondary w-50" data-bs-dismiss="modal">Batal</button>
+        <button type="button" class="btn btn-glass-primary w-50" id="btnSendReset">Perbarui Sandi</button>
+      </div>
+      <div id="forgotStatus" class="text-center mt-2 small" style="display: none;"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Menu, Kustomisasi Tema, & Pencapaian -->
+<div class="modal fade" id="menuModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" style="max-height: 90vh;">
+    <div class="modal-content glass-card border-0 m-2 shadow-lg" style="background: var(--modal-bg); max-height: 85vh; display: flex; flex-direction: column; overflow: hidden;">
+      
+      <div class="modal-header border-0 pb-0 pt-3 px-3">
+        <h5 class="fw-bold m-0" style="color: var(--accent-primary); font-size: 1rem;">🎨 Studio Tema & Pencapaian</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body px-3 py-3" style="overflow-y: auto; overflow-x: hidden; flex: 1; box-sizing: border-box;">
+        
+        <div class="mb-4 p-3 rounded-4" style="background: var(--toggle-btn-bg); border: 1px solid var(--glass-border-subtle); box-sizing: border-box;">
+          <h6 class="fw-bold mb-2" style="font-size: 0.85rem; color: var(--text-main);">✨ Kustomisasi Wallpaper / Background</h6>
+          <div class="theme-buttons-container mb-3">
+            <button type="button" class="theme-preset-btn" data-bg-val="obsidian" onclick="setThemeBackground('obsidian')">Obsidian</button>
+            <button type="button" class="theme-preset-btn" data-bg-val="navy" onclick="setThemeBackground('navy')">Deep Navy</button>
+            <button type="button" class="theme-preset-btn" data-bg-val="purple" onclick="setThemeBackground('purple')">Twilight</button>
+            <button type="button" class="theme-preset-btn" data-bg-val="light" onclick="setThemeBackground('light')">Light Clean</button>
+          </div>
+
+          <h6 class="fw-bold mb-2" style="font-size: 0.85rem; color: var(--text-main);">🎨 Pilihan Warna Aksen Utama</h6>
+          <div class="d-flex justify-content-around align-items-center pt-1">
+            <span class="color-dot" style="background: #30d158;" data-accent-val="green" onclick="setThemeAccent('green')" title="Emerald Green"></span>
+            <span class="color-dot" style="background: #0a84ff;" data-accent-val="blue" onclick="setThemeAccent('blue')" title="Royal Blue"></span>
+            <span class="color-dot" style="background: #ff9f0a;" data-accent-val="orange" onclick="setThemeAccent('orange')" title="Sunset Orange"></span>
+            <span class="color-dot" style="background: #bf5af2;" data-accent-val="purple" onclick="setThemeAccent('purple')" title="Purple Neon"></span>
+            <span class="color-dot" style="background: #ff375f;" data-accent-val="pink" onclick="setThemeAccent('pink')" title="Neon Pink"></span>
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center p-2 mb-2 rounded-3" style="background: var(--toggle-btn-bg); border: 1px solid var(--glass-border-subtle);">
+          <span class="small" style="color: var(--text-sub); font-size: 0.75rem;">Tentang Pembuat & Perjalanan</span>
+          <button type="button" class="btn btn-glass-secondary py-1 px-2 fw-bold" id="toggleCreatorBtn" onclick="toggleCreatorCard()" style="font-size: 0.7rem;">Sembunyikan</button>
+        </div>
+
+        <div id="creatorCardSection" class="p-3 mb-3 rounded-4" style="background: var(--toggle-btn-bg); border: 1px solid var(--glass-border-subtle); box-sizing: border-box;">
+          <div class="d-flex align-items-center gap-3 mb-2">
+            <div style="font-size: 1.8rem;">🚀</div>
+            <div>
+              <h6 class="fw-bold m-0" style="font-size: 0.9rem; color: var(--text-main);">Hello, I am Hanafi</h6>
+              <p class="m-0" style="font-size: 0.7rem; color: var(--text-sub);">Software Engineering Enthusiast & Developer</p>
+            </div>
+          </div>
+          <p class="m-0 mt-2" style="font-size: 0.75rem; color: var(--text-sub); line-height: 1.4;">
+            "I learned a lot from my friends and family. I tried, failed, tried again, and failed again—but I never gave up. Through persistence and continuous iteration, I finally succeeded and brought this creation to life until today.<br><br>
+            This application was developed to help manage financial dreams wisely with a touch of smart target tracking and gamification.<br><br>
+            <strong>Thank you for using this application!</strong>"
+          </p>
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center p-2 mb-3 rounded-3" style="background: var(--toggle-btn-bg); border: 1px solid var(--glass-border-subtle);">
+          <span class="small" style="color: var(--text-sub); font-size: 0.75rem;">Tampilkan Lencana Pencapaian</span>
+          <button type="button" class="btn btn-glass-secondary py-1 px-2 fw-bold" id="toggleStatsBtn" onclick="toggleStatsSection()" style="font-size: 0.7rem;">Sembunyikan</button>
+        </div>
+
+        <div id="statsAchievementContainer">
+          <div class="mb-2">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <span class="small fw-bold" style="color: var(--text-sub);">🏆 Lencana Pencapaian (Badges)</span>
+              <span class="badge-ios" id="badgeCounterCount">0/4 Terbuka</span>
+            </div>
+            <div class="row g-2">
+              <div class="col-6">
+                <div id="badge1" class="badge-box locked">
+                  <div style="font-size: 1.3rem;">🎯</div>
+                  <div class="fw-bold mt-1" style="font-size: 0.75rem; color: var(--text-main);">Pencetus Target</div>
+                  <div style="font-size: 0.65rem; color: var(--text-sub);">Buat 1 Target</div>
+                </div>
+              </div>
+              <div class="col-6">
+                <div id="badge2" class="badge-box locked">
+                  <div style="font-size: 1.3rem;">💸</div>
+                  <div class="fw-bold mt-1" style="font-size: 0.75rem; color: var(--text-main);">Langkah Pertama</div>
+                  <div style="font-size: 0.65rem; color: var(--text-sub);">Lakukan 1 Setoran</div>
+                </div>
+              </div>
+              <div class="col-6">
+                <div id="badge3" class="badge-box locked">
+                  <div style="font-size: 1.3rem;">⭐</div>
+                  <div class="fw-bold mt-1" style="font-size: 0.75rem; color: var(--text-main);">Kolektor Handal</div>
+                  <div style="font-size: 0.65rem; color: var(--text-sub);">Akumulasi Rp 1 Jt</div>
+                </div>
+              </div>
+              <div class="col-6">
+                <div id="badge4" class="badge-box locked">
+                  <div style="font-size: 1.3rem;">🚀</div>
+                  <div class="fw-bold mt-1" style="font-size: 0.75rem; color: var(--text-main);">Target Sempurna</div>
+                  <div style="font-size: 0.65rem; color: var(--text-sub);">Capai 100% Target</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Modal Edit Target -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content glass-card border-0 m-3" style="background: var(--modal-bg); overflow: hidden;">
+      <h6 class="fw-bold mb-3" style="color: var(--accent-primary);">✏ Edit Target Tabungan</h6>
+      <input type="hidden" id="editTargetId">
+      <div class="row g-2 mb-2">
+        <div class="col-3">
+          <label class="small mb-1" style="color: var(--text-sub); font-size: 0.75rem;">Emoji</label>
+          <select id="editTargetEmoji" class="form-select glass-input py-2">
+            <option value="💰">💰</option>
+            <option value="✈️">✈️</option>
+            <option value="💻">💻</option>
+            <option value="🚗">🚗</option>
+            <option value="🏠">🏠</option>
+            <option value="🛡️">🛡️</option>
+            <option value="📱">📱</option>
+            <option value="🎁">🎁</option>
+            <option value="💍">💍</option>
+          </select>
+        </div>
+        <div class="col-9">
+          <label class="small mb-1" style="color: var(--text-sub); font-size: 0.75rem;">Nama Target</label>
+          <input type="text" id="editTargetName" class="form-control glass-input">
+        </div>
+      </div>
+      <div class="mb-3">
+        <label class="small mb-1" style="color: var(--text-sub); font-size: 0.75rem;">Nominal Target (Rp)</label>
+        <input type="text" id="editTargetAmount" class="form-control glass-input glass-input-shiny" oninput="formatInputRibuan(this)">
+      </div>
+      <div class="d-flex gap-2">
+        <button type="button" class="btn btn-glass-secondary w-50" data-bs-dismiss="modal">Batal</button>
+        <button type="button" class="btn btn-glass-primary w-50" id="btnSaveEdit">Simpan Perubahan</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      const overlay = document.getElementById('welcomeOverlay');
+      if (overlay) {
+        overlay.style.opacity = '0';
+        overlay.style.visibility = 'hidden';
+      }
+    }, 3700);
+
+    const hash = window.location.hash;
+    if (hash && hash.includes('access_token')) {
+      const params = new URLSearchParams(hash.replace('#', '?'));
+      const accessToken = params.get('access_token');
+      if (accessToken) {
+        localStorage.setItem('sb_token', accessToken);
+        fetch('https://bimqijdcdgegmbpwtwqp.supabase.co/auth/v1/user', {
+          headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${accessToken}` }
+        })
+        .then(res => res.json())
+        .then(userData => {
+          localStorage.setItem('sb_user', JSON.stringify(userData));
+          window.location.hash = '';
+          window.location.reload();
+        }).catch(err => console.error(err));
+      }
+    }
+  });
+
+  function initCustomTheme() {
+    const savedBg = localStorage.getItem('tabungan_bg_preset') || 'obsidian';
+    const savedAccent = localStorage.getItem('tabungan_accent_preset') || 'green';
+    
+    setThemeBackground(savedBg, false);
+    setThemeAccent(savedAccent, false);
+  }
+
+  function setThemeBackground(bgName, save = true) {
+    document.body.setAttribute('data-bg', bgName);
+    if (save) localStorage.setItem('tabungan_bg_preset', bgName);
+    
+    document.querySelectorAll('.theme-preset-btn').forEach(btn => {
+      if (btn.getAttribute('data-bg-val') === bgName) {
+        btn.classList.add('active');
+      } else {
+        btn.classList.remove('active');
+      }
+    });
+  }
+
+  function setThemeAccent(accentName, save = true) {
+    document.body.setAttribute('data-accent', accentName);
+    if (save) localStorage.setItem('tabungan_accent_preset', accentName);
+
+    document.querySelectorAll('.color-dot').forEach(dot => {
+      if (dot.getAttribute('data-accent-val') === accentName) {
+        dot.classList.add('active');
+      } else {
+        dot.classList.remove('active');
+      }
+    });
+  }
+
+  initCustomTheme();
+
+  const motivationalQuotes = [
+    "Menabung hari ini adalah investasi kenyamanan untuk masa depanmu! 🚀",
+    "Sedikit demi sedikit, lama-lama menjadi bukit. Terus konsisten menabung ya! 💪",
+    "Jangan menabung sisa pengeluaran, tapi sisihkan uang untuk ditabung terlebih dahulu! 💡",
+    "Disiplin finansial hari ini adalah kunci kebebasan finansial di masa depan. 🔥",
+    "Ingat impianmu! Setiap nominal yang kamu setorkan mendekatkanmu ke tujuanmu. ⭐"
+  ];
+
+  function triggerMotivation() {
+    const randomIndex = Math.floor(Math.random() * motivationalQuotes.length);
+    showSystemNotification("Motivasi Finansial 🎯", motivationalQuotes[randomIndex]);
+  }
+
+  async function requestNotificationPermission() {
+    if (!("Notification" in window)) {
+      alert("Browser Anda tidak mendukung fitur Notifikasi.");
+      return;
+    }
+    const permission = await Notification.requestPermission();
+    if (permission === "granted") {
+      showSystemNotification("Notifikasi Aktif! 🚀", "Terima kasih telah mengaktifkan izin notifikasi.");
+    } else {
+      alert("Izin notifikasi ditolak.");
+    }
+  }
+
+  function showSystemNotification(title, body) {
+    try {
+      if ("Notification" in window && Notification.permission === "granted") {
+        if (navigator.serviceWorker && navigator.serviceWorker.controller) {
+          navigator.serviceWorker.ready.then(registration => {
+            registration.showNotification(title, { body: body, icon: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png" });
+          });
+        } else {
+          console.log(title + " - " + body);
+        }
+      } else {
+        console.log(title + " - " + body);
+      }
+    } catch (e) {
+      console.log("Notifikasi dilewati:", e.message);
+    }
+  }
+
+  const SUPABASE_URL = 'https://bimqijdcdgegmbpwtwqp.supabase.co';
+  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJpbXFpamRjZGdlZ21icHd0d3FwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk2NzE3NDEsImV4cCI6MjEwNTI0Nzc0MX0.xzRMoLuNYaZUR4JH5oxbYb4ErHqLEjsz0sBhp-74V7Q';
+
+  let authToken = localStorage.getItem('sb_token') || null;
+  let currentUser = JSON.parse(localStorage.getItem('sb_user') || 'null');
+  let targets = [];
+  let statsVisible = true;
+  let creatorVisible = true;
+  let isBlurPrivacyOn = false;
+
+  function toggleBlurPrivacy() {
+    isBlurPrivacyOn = !isBlurPrivacyOn;
+    renderTargets();
+  }
+
+  function toggleStatsSection() {
+    statsVisible = !statsVisible;
+    const container = document.getElementById('statsAchievementContainer');
+    const btn = document.getElementById('toggleStatsBtn');
+    if (statsVisible) {
+      container.style.display = 'block';
+      btn.innerText = 'Sembunyikan';
+    } else {
+      container.style.display = 'none';
+      btn.innerText = 'Tampilkan';
+    }
+  }
+
+  function toggleCreatorCard() {
+    creatorVisible = !creatorVisible;
+    const section = document.getElementById('creatorCardSection');
+    const btn = document.getElementById('toggleCreatorBtn');
+    if (creatorVisible) {
+      section.style.display = 'block';
+      btn.innerText = 'Sembunyikan';
+    } else {
+      section.style.display = 'none';
+      btn.innerText = 'Tampilkan';
+    }
+  }
+
+  function formatInputRibuan(input) {
+    let value = input.value.replace(/\D/g, '');
+    if (value) {
+      input.value = parseInt(value, 10).toLocaleString('id-ID');
+    } else {
+      input.value = '';
+    }
+  }
+
+  function parseRibuanToNumber(str) {
+    if (!str) return 0;
+    return parseFloat(str.toString().replace(/\./g, '')) || 0;
+  }
+
+  function formatRupiah(angka) {
+    return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(angka);
+  }
+
+  function showStatus(msg, isError = false) {
+    const box = document.getElementById('authStatus');
+    box.style.display = 'block';
+    box.style.background = isError ? 'rgba(255, 69, 58, 0.2)' : 'rgba(48, 209, 88, 0.2)';
+    box.style.color = isError ? '#ff453a' : 'var(--accent-primary)';
+    box.innerText = msg;
+  }
+
+  async function supabaseRequest(endpoint, method = 'GET', body = null) {
+    const headers = {
+      'apikey': SUPABASE_KEY,
+      'Content-Type': 'application/json',
+      'Prefer': 'return=representation'
+    };
+    if (authToken) headers['Authorization'] = `Bearer ${authToken}`;
+
+    try {
+      const res = await fetch(`${SUPABASE_URL}${endpoint}`, {
+        method: method,
+        headers: headers,
+        body: body ? JSON.stringify(body) : null
+      });
+
+      const text = await res.text();
+      let data = text ? JSON.parse(text) : null;
+
+      if (!res.ok) throw new Error((data && (data.msg || data.error_description || data.message)) || 'Gagal terhubung ke database');
+      return data;
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  document.getElementById('tabLoginBtn').onclick = () => {
+    document.getElementById('formLogin').style.display = 'block';
+    document.getElementById('formRegister').style.display = 'none';
+    document.getElementById('tabLoginBtn').style.color = 'var(--text-main)';
+    document.getElementById('tabRegisterBtn').style.color = 'var(--text-sub)';
+    document.getElementById('authStatus').style.display = 'none';
+  };
+
+  document.getElementById('tabRegisterBtn').onclick = () => {
+    document.getElementById('formLogin').style.display = 'none';
+    document.getElementById('formRegister').style.display = 'block';
+    document.getElementById('tabLoginBtn').style.color = 'var(--text-sub)';
+    document.getElementById('tabRegisterBtn').style.color = 'var(--text-main)';
+    document.getElementById('authStatus').style.display = 'none';
+  };
+
+  document.getElementById('btnDoLogin').onclick = async () => {
+    const email = document.getElementById('loginEmail').value.trim();
+    const password = document.getElementById('loginPassword').value;
+
+    if (!email || !password) return showStatus('Isi Email dan Kata Sandi!', true);
+
+    try {
+      showStatus('Memproses login...', false);
+      const data = await supabaseRequest('/auth/v1/token?grant_type=password', 'POST', { email, password });
+      authToken = data.access_token;
+      currentUser = data.user;
+      localStorage.setItem('sb_token', authToken);
+      localStorage.setItem('sb_user', JSON.stringify(currentUser));
+      showStatus('Login Berhasil!', false);
+      setTimeout(() => { initApp(); }, 200);
+    } catch (err) {
+      showStatus(err.message, true);
+    }
+  };
+
+  document.getElementById('btnDoRegister').onclick = async () => {
+    const email = document.getElementById('regEmail').value.trim();
+    const password = document.getElementById('regPassword').value;
+
+    if (!email || !password) return showStatus('Isi Email dan Kata Sandi Baru!', true);
+
+    try {
+      showStatus('Mendaftarkan akun...', false);
+      await supabaseRequest('/auth/v1/signup', 'POST', { email, password });
+      showStatus('Akun berhasil dibuat! Silakan masuk.', false);
+      document.getElementById('tabLoginBtn').click();
+    } catch (err) {
+      showStatus(err.message, true);
+    }
+  };
+
+  async function loginWithGoogle() {
+    try {
+      const redirectUrl = window.location.href.split('#')[0];
+      const res = await fetch(`${SUPABASE_URL}/auth/v1/authorize?provider=google&redirect_to=${encodeURIComponent(redirectUrl)}`, {
+        headers: { 'apikey': SUPABASE_KEY }
+      });
+      const data = await res.json();
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        window.location.href = `${SUPABASE_URL}/auth/v1/authorize?provider=google&redirect_to=${encodeURIComponent(redirectUrl)}`;
+      }
+    } catch (e) {
+      window.location.href = `${SUPABASE_URL}/auth/v1/authorize?provider=google&redirect_to=${encodeURIComponent(window.location.href.split('#')[0])}`;
+    }
+  }
+
+  function openForgotPasswordModal() {
+    document.getElementById('forgotEmail').value = '';
+    document.getElementById('newResetPassword').value = '';
+    document.getElementById('forgotStatus').style.display = 'none';
+    const modal = new bootstrap.Modal(document.getElementById('forgotModal'));
+    modal.show();
+  }
+
+  document.getElementById('btnSendReset').onclick = async () => {
+    const email = document.getElementById('forgotEmail').value.trim();
+    const newPassword = document.getElementById('newResetPassword').value;
+    const statusEl = document.getElementById('forgotStatus');
+    statusEl.style.display = 'block';
+
+    if (!email || !newPassword) {
+      statusEl.style.color = '#ff453a';
+      statusEl.innerText = 'Isi email dan kata sandi baru dengan lengkap!';
+      return;
+    }
+
+    if (newPassword.length < 6) {
+      statusEl.style.color = '#ff453a';
+      statusEl.innerText = 'Kata sandi baru minimal 6 karakter!';
+      return;
+    }
+
+    try {
+      statusEl.style.color = 'var(--accent-primary)';
+      statusEl.innerText = 'Mengirim tautan/pembaruan sandi...';
+      
+      await supabaseRequest('/auth/v1/recover', 'POST', { email, redirect_to: window.location.href.split('#')[0] });
+      
+      statusEl.innerText = 'Instruksi & link pemulihan telah dikirim ke email Anda!';
+      setTimeout(() => {
+        const modalEl = document.getElementById('forgotModal');
+        bootstrap.Modal.getInstance(modalEl).hide();
+      }, 2500);
+    } catch (e) {
+      statusEl.style.color = '#ff453a';
+      statusEl.innerText = 'Gagal: ' + e.message;
+    }
+  };
+
+  document.getElementById('btnLogout').onclick = () => {
+    localStorage.removeItem('sb_token');
+    localStorage.removeItem('sb_user');
+    authToken = null;
+    currentUser = null;
+    initApp();
+  };
+
+  function initApp() {
+    if (authToken && currentUser) {
+      document.getElementById('authSection').style.display = 'none';
+      document.getElementById('appSection').style.display = 'block';
+      document.getElementById('userEmailDisplay').innerText = currentUser.email || currentUser.user_metadata?.email || 'User Google';
+      loadData();
+    } else {
+      document.getElementById('authSection').style.display = 'block';
+      document.getElementById('appSection').style.display = 'none';
+      document.getElementById('loginEmail').value = '';
+      document.getElementById('loginPassword').value = '';
+      document.getElementById('authStatus').style.display = 'none';
+    }
+  }
+
+  const addTargetCard = document.getElementById('addTargetCard');
+  document.getElementById('btnToggleAddTarget').onclick = () => {
+    if (addTargetCard.style.display === 'none') {
+      addTargetCard.style.display = 'block';
+      document.getElementById('targetName').focus();
+    } else {
+      addTargetCard.style.display = 'none';
+    }
+  };
+
+  document.getElementById('btnCancelAddTarget').onclick = () => {
+    addTargetCard.style.display = 'none';
+  };
+
+  document.getElementById('btnSaveTarget').onclick = async () => {
+    const name = document.getElementById('targetName').value.trim();
+    const emoji = document.getElementById('targetEmoji').value;
+    const rawAmount = document.getElementById('targetAmount').value;
+    const amount = parseRibuanToNumber(rawAmount);
+
+    if (!name || !amount) {
+      alert('Mohon isi nama target dan nominal target dengan benar!');
+      return;
+    }
+
+    try {
+      const formattedName = `${emoji} ${name}`;
+
+      await supabaseRequest('/rest/v1/tabungan', 'POST', {
+        name: formattedName,
+        target_amount: amount,
+        collected: 0,
+        user_id: currentUser.id
+      });
+
+      document.getElementById('targetName').value = '';
+      document.getElementById('targetAmount').value = '';
+      addTargetCard.style.display = 'none';
+      loadData();
+    } catch (e) {
+      alert('Tidak bisa menyimpan target: ' + e.message);
+    }
+  };
+
+  async function loadData() {
+    try {
+      targets = await supabaseRequest(`/rest/v1/tabungan?user_id=eq.${currentUser.id}&order=id.desc`);
+      renderTargets();
+      evaluateAchievements();
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  function parseTargetName(fullName) {
+    if (!fullName) return { emoji: '💰', title: 'Tanpa Nama' };
+    const cleanName = fullName.trim();
+    const firstChar = cleanName.codePointAt(0);
+    if (firstChar > 127 || /\p{Extended_Pictographic}/u.test(cleanName.substring(0, 2))) {
+      const match = cleanName.match(/^(\p{Extended_Pictographic}|\S)\s*(.*)$/u);
+      if (match) {
+        return { emoji: match[1], title: match[2] || match[1] };
+      }
+    }
+    return { emoji: '💰', title: cleanName };
+  }
+
+  function renderTargets() {
+    const container = document.getElementById('savingsList');
+    container.innerHTML = '';
+
+    if (!targets || targets.length === 0) {
+      container.innerHTML = `<div class="text-center py-4" style="color: var(--text-sub); font-size: 0.85rem;">Belum ada target tabungan. Klik "+ Target" di kanan atas untuk membuat target baru.</div>`;
+      return;
+    }
+
+    targets.forEach((t) => {
+      const current = t.collected || 0;
+      const total = t.target_amount || 1;
+      const pct = Math.min(Math.round((current / total) * 100), 100);
+      
+      const parsed = parseTargetName(t.name);
+      const iconEmoji = parsed.emoji;
+      const cleanTitle = parsed.title;
+
+      const displayTarget = isBlurPrivacyOn ? "••••••••" : formatRupiah(total);
+      const displayCurrent = isBlurPrivacyOn ? "••••••••" : formatRupiah(current);
+
+      container.innerHTML += `
+        <div class="glass-card">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="d-flex align-items-center gap-3" style="overflow: hidden; max-width: 75%;">
+              <div class="target-icon-badge">${iconEmoji}</div>
+              <div style="overflow: hidden;">
+                <h6 class="fw-bold m-0 text-truncate" style="letter-spacing: -0.3px; color: var(--text-main);">${cleanTitle}</h6>
+                <span class="badge-ios mt-1 d-inline-block text-truncate">Target: ${displayTarget}</span>
+              </div>
+            </div>
+            <div class="d-flex gap-2 flex-shrink-0">
+              <button type="button" class="btn btn-sm p-0 text-secondary border-0" onclick="bukaModalEdit(${t.id}, '${cleanTitle.replace(/'/g, "\\'")}', ${total}, '${iconEmoji}')" title="Edit Target">✏️</button>
+              <button type="button" class="btn btn-sm p-0 text-danger border-0" onclick="hapusTarget(${t.id})" title="Hapus Target">🗑</button>
+            </div>
+          </div>
+
+          <div class="d-flex justify-content-between align-items-center mb-1" style="font-size: 0.8rem; color: var(--text-sub);">
+            <span>Terkumpul: <strong style="color: var(--text-main);">${displayCurrent}</strong></span>
+            <span class="fw-bold" style="color: var(--accent-primary);">${pct}%</span>
+          </div>
+
+          <div class="progress-glass mb-3">
+            <div class="progress-bar-glass" style="width: ${pct}%;"></div>
+          </div>
+
+          <div class="d-flex gap-2">
+            <input type="text" id="amountInput-${t.id}" class="form-control glass-input glass-input-shiny py-1 px-3" placeholder="Nominal Rp" style="font-size: 0.85rem;" oninput="formatInputRibuan(this)">
+            <button type="button" class="btn btn-sm px-3 fw-bold btn-glass-setor flex-shrink-0" onclick="prosesSetoran(${t.id}, ${current}, 'setor', '${cleanTitle}')">+ Setor</button>
+            <button type="button" class="btn btn-sm px-3 fw-bold btn-glass-tarik flex-shrink-0" onclick="prosesSetoran(${t.id}, ${current}, 'tarik', '${cleanTitle}')">- Tarik</button>
+          </div>
+        </div>
+      `;
+    });
+  }
+
+  function evaluateAchievements() {
+    let unlockedCount = 0;
+    const b1 = targets.length > 0;
+    setBadgeState('badge1', b1); if(b1) unlockedCount++;
+
+    const b2 = targets.some(t => (t.collected || 0) > 0);
+    setBadgeState('badge2', b2); if(b2) unlockedCount++;
+
+    const totalGlobal = targets.reduce((acc, t) => acc + (t.collected || 0), 0);
+    const b3 = totalGlobal >= 1000000;
+    setBadgeState('badge3', b3); if(b3) unlockedCount++;
+
+    const b4 = targets.some(t => (t.collected || 0) >= t.target_amount);
+    setBadgeState('badge4', b4); if(b4) unlockedCount++;
+
+    document.getElementById('badgeCounterCount').innerText = `${unlockedCount}/4 Terbuka`;
+  }
+
+  function setBadgeState(id, isUnlocked) {
+    const el = document.getElementById(id);
+    if(!el) return;
+    if(isUnlocked) {
+      el.classList.remove('locked');
+      el.classList.add('unlocked');
+    } else {
+      el.classList.remove('unlocked');
+      el.classList.add('locked');
+    }
+  }
+
+  function openMenuModal() {
+    const modal = new bootstrap.Modal(document.getElementById('menuModal'));
+    modal.show();
+  }
+
+  async function prosesSetoran(id, currentCollected, jenis, targetName) {
+    const input = document.getElementById(`amountInput-${id}`);
+    const amount = parseRibuanToNumber(input.value);
+    if (!amount || amount <= 0) {
+      alert('Masukkan nominal transaksi yang valid!');
+      return;
+    }
+
+    let newTotal = currentCollected;
+    if (jenis === 'setor') {
+      newTotal += amount;
+    } else if (jenis === 'tarik') {
+      newTotal = Math.max(0, currentCollected - amount);
+    }
+
+    try {
+      await supabaseRequest(`/rest/v1/tabungan?id=eq.${id}`, 'PATCH', { collected: newTotal });
+      
+      const formattedAmount = formatRupiah(amount);
+      if (jenis === 'setor') {
+        showSystemNotification("Setoran Berhasil! 💰", `Berhasil menabung ${formattedAmount} untuk target "${targetName}".`);
+      } else {
+        showSystemNotification("Penarikan Berhasil! ⚠️", `Berhasil menarik ${formattedAmount} dari target "${targetName}".`);
+      }
+
+      loadData();
+      input.value = '';
+    } catch (e) {
+      alert('Gagal memproses transaksi: ' + e.message);
+    }
+  }
+
+  function bukaModalEdit(id, name, amount, emoji) {
+    document.getElementById('editTargetId').value = id;
+    document.getElementById('editTargetName').value = name;
+    document.getElementById('editTargetEmoji').value = emoji || '💰';
+    
+    const editAmountInput = document.getElementById('editTargetAmount');
+    editAmountInput.value = amount;
+    formatInputRibuan(editAmountInput);
+
+    const modal = new bootstrap.Modal(document.getElementById('editModal'));
+    modal.show();
+  }
+
+  document.getElementById('btnSaveEdit').onclick = async () => {
+    const id = document.getElementById('editTargetId').value;
+    const name = document.getElementById('editTargetName').value.trim();
+    const emoji = document.getElementById('editTargetEmoji').value;
+    const amount = parseRibuanToNumber(document.getElementById('editTargetAmount').value);
+
+    if (!name || !amount) {
+      alert('Nama dan nominal target tidak boleh kosong!');
+      return;
+    }
+
+    try {
+      const formattedName = `${emoji} ${name}`;
+      await supabaseRequest(`/rest/v1/tabungan?id=eq.${id}`, 'PATCH', { name: formattedName, target_amount: amount });
+      const modalEl = document.getElementById('editModal');
+      const modal = bootstrap.Modal.getInstance(modalEl);
+      modal.hide();
+      loadData();
+    } catch (e) {
+      alert('Gagal mengubah target: ' + e.message);
+    }
+  };
+
+  async function hapusTarget(id) {
+    if (confirm('Apakah Anda yakin ingin menghapus target tabungan ini?')) {
+      try {
+        await supabaseRequest(`/rest/v1/tabungan?id=eq.${id}`, 'DELETE');
+        loadData();
+      } catch (e) {
+        alert('Gagal menghapus target: ' + e.message);
+      }
+    }
+  }
+
+  initApp();
+</script>
+</body>
+</html>
